@@ -3,10 +3,11 @@ mod server;
 
 use server::start_server;
 
-fn main() {
-    println!("Starting Kafka protocol server...");
+#[tokio::main]
+async fn main() {
+    println!("\n\nStarting Kafka protocol server...");
 
-    if let Err(e) = start_server() {
+    if let Err(e) = start_server().await {
         eprintln!("Server error: {}", e);
         std::process::exit(1);
     }
