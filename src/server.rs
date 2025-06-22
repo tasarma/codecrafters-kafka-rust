@@ -20,21 +20,20 @@ async fn handle_client(mut socket: TcpStream) -> Result<(), Box<dyn Error>> {
                 let request = KafkaRequest::parse(&buffer[..bytes_read])?;
                 println!("Received request: {:?}", request);
                 // Handle API version request (API key 18)
-                if request.api_key == 18 {
-                    let response =
-                        ApiVersionResponse::new(request.correlation_id, request.api_version);
-                    let response_bytes = response.serialize(request.api_version)?;
+                //if request.api_key == 18 {
+                let response = ApiVersionResponse::new(request.correlation_id, request.api_version);
+                let response_bytes = response.serialize(request.api_version)?;
 
-                    socket.write_all(&response_bytes).await?;
+                socket.write_all(&response_bytes).await?;
 
-                    println!(
-                        "Sent API version response for correlation ID: {} (version: {})",
-                        request.correlation_id, request.api_version
-                    );
-                } else {
-                    println!("Unsupported API key: {}", request.api_key);
-                    // Could send an error response here for unsupported API keys
-                }
+                println!(
+                    "Sent API version response for correlation ID: {} (version: {})",
+                    request.correlation_id, request.api_version
+                );
+                //} else {
+                //    println!("Unsupported API key: {}", request.api_key);
+                // Could send an error response here for unsupported API keys
+                //}
             }
             Err(_) => return Ok(()),
         }
